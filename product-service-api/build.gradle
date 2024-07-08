@@ -1,0 +1,10 @@
+dependencies {
+	compileOnly "org.projectlombok:lombok:${lombokVersion}"
+	annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+	
+	implementation project(":order-manager-common-api-event")
+}
+
+jar {
+    enabled = true
+}

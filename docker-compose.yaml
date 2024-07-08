@@ -1,0 +1,122 @@
+version: '3.1'
+
+services:
+
+  order-service:
+    build: ./order-service
+    deploy:
+      mode: replicated
+      replicas: 2
+    environment:
+      - SPRING_PROFILES_ACTIVE=order-service
+      - ASW_ORDERMANAGER_ORDERSERVICE_INSTANCENAME=os1
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://orderservice-db:5432/orderservice
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    
+    
+ 
+    
+  product-service:
+    build: ./product-service
+    deploy:
+      mode: replicated
+      replicas: 2
+    environment:
+      - SPRING_PROFILES_ACTIVE=product-service
+      - ASW_ORDERMANAGER_PRODUCTSERVICE_INSTANCENAME=os1
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://productservice-db:5432/productservice
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    
+
+
+    
+  order-validation-service:
+    build: ./order-validation-service
+    deploy:
+      mode: replicated
+      replicas: 2
+    environment:
+      - SPRING_PROFILES_ACTIVE=order-validation-service
+      - ASW_ORDERMANAGER_ORDERVALIDATIONSERVICE_INSTANCENAME=ov1
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://ordervalidationservice-db:5432/ordervalidationservice
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+  
+    
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "8080:8080"
+  
+  orderservice-db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: orders
+    volumes:
+      - order-service-db-data:/var/lib/postgresql/data
+      - "./postgres/order-service:/docker-entrypoint-initdb.d"
+    ports:
+      - "5433:5432"
+
+  productservice-db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: products
+    volumes:
+      - product-service-db-data:/var/lib/postgresql/data
+      - "./postgres/product-service:/docker-entrypoint-initdb.d"
+    ports:
+      - "5434:5432"
+     
+  ordervalidationservice-db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: products
+    volumes:
+      - order-validation-service-db-data:/var/lib/postgresql/data
+      - "./postgres/order-validation-service:/docker-entrypoint-initdb.d"
+    ports:
+      - "5435:5432"
+        
+  consul:
+    image: docker.io/hashicorp/consul
+    container_name: consul
+    ports:
+      - "8500:8500"
+  
+  kafka:
+    image: docker.io/bitnami/kafka:3.6
+    container_name: kafka
+    ports:
+    - "9092:9092"
+    volumes:
+    - "kafka_data:/bitnami"
+    environment:
+    - KAFKA_CFG_NODE_ID=0
+    - KAFKA_CFG_PROCESS_ROLES=controller,broker
+    - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
+    - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
+    - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+    - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+
+    
+volumes:
+    kafka_data:
+        driver: local
+    order-service-db-data:
+      name: order-service-db-data
+    product-service-db-data:
+      name: product-service-db-data
+    order-validation-service-db-data:
+      name: order-validation-service-db-data
