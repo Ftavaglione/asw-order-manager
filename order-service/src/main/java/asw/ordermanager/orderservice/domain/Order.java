@@ -14,7 +14,7 @@ import lombok.*;
 public class Order implements Comparable<Order> {
 
 	@Id 
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@EqualsAndHashCode.Include
 	private Long id; 
 	

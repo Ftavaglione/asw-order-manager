@@ -1,4 +1,4 @@
-package asw.ordermanager.orderservice.api.event;
+package asw.ordermanager.api.event;
 					  
 import asw.ordermanager.common.api.event.DomainEvent;
 import asw.ordermanager.orderservice.api.rest.*;

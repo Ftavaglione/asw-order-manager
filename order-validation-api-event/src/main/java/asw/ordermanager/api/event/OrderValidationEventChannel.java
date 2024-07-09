@@ -1,4 +1,4 @@
-package asw.ordermanager.ordervalidation.api.event;
+package asw.ordermanager.api.event;
 
 public class OrderValidationEventChannel {
 

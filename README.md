@@ -74,20 +74,11 @@ L'applicazione *OrderManager* è composta dai seguenti microservizi:
   * espone il servizio *order-validation-service* sul path `/ordervalidationservice` - ad esempio, `GET /ordervalidationservice/ordervalidations/{id}`
 
 
-## Costruzione 
+## Costruzione ed Esecuzione 
 
-Per costruire questa applicazione: 
+Per costruire ed eseguire questa applicazione: 
 
-* eseguire il comando `gradle build` 
-
-
-## Esecuzione 
-
-Per eseguire questa applicazione: 
-
-* avviare *Consul* eseguendo lo script `start-consul.sh` 
-
-* per avviare l'applicazione *OrderManager*, eseguire lo script `run-ordermanager.sh` 
+* eseguire lo script `start-ordermanager.sh`   
 
 * per inizializzare le basi di dati con alcuni dati di esempio, eseguire gli script `do-init-products.sh` e `do-init-orders.sh` 
 
@@ -120,17 +111,9 @@ Ed inoltre ancora:
 
 * nota: questi test possono essere utilmente eseguiti in sequenza, senza eseguire prima nessuno degli altri script  
 
-Alla fine, l'applicazione può essere arrestata usando lo script `terminate-java-processes.sh` (**da usare con cautela!**). 
-
-Inoltre, *Consul* può essere arrestato con lo script `stop-consul.sh`. 
+Alla fine, l'applicazione può essere arrestata usando lo script `kill-ordermanager.sh` 
 
 
 ## Descrizione delle attività da svolgere 
 
 Si veda la descrizione del progetto sul sito web del corso di [Architettura dei sistemi software](http://cabibbo.inf.uniroma3.it/asw/).
-
-
-## Utilizzo di Kafka con Kubernetes
-
-Nel rilascio dell'applicazione *OrderManager* in *Kubernetes*, l'aspetto più difficile è probabilmente l'utilizzo di Kafka.
-Nella cartella [kafka-kubernetes](kafka-kubernetes) è possibile trovare alcuni utili suggerimenti in proposito. 

@@ -8,7 +8,7 @@ import lombok.*;
 
 /* Ordine. */ 
 @Entity 
-@Table(name="VALIDATION_ORDERS")
+@Table(name="VALID_ORDERS")
 @Data 
 @NoArgsConstructor @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)

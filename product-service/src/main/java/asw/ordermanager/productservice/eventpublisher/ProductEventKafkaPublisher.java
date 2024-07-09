@@ -1,8 +1,8 @@
 package asw.ordermanager.productservice.eventpublisher;
 
-import asw.ordermanager.productservice.api.event.ProductCreatedEvent;
-import asw.ordermanager.productservice.api.event.ProductServiceEventChannel;
-import asw.ordermanager.productservice.api.event.UpdateStockLevelEvent;
+import asw.ordermanager.api.event.ProductCreatedEvent;
+import asw.ordermanager.api.event.ProductServiceEventChannel;
+import asw.ordermanager.api.event.UpdateStockLevelEvent;
 import asw.ordermanager.common.api.event.DomainEvent;
 import asw.ordermanager.productservice.domain.ProductEventPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +13,8 @@ import java.util.logging.Logger;
 
 @Component
 public class ProductEventKafkaPublisher implements ProductEventPublisher {
+
+	private final Logger logger = Logger.getLogger(this.getClass().toString());
 
     @Autowired
     private KafkaTemplate<String, DomainEvent> template;
@@ -25,7 +27,7 @@ public class ProductEventKafkaPublisher implements ProductEventPublisher {
             channel = ProductServiceEventChannel.productCreated;
         else if(event instanceof UpdateStockLevelEvent)
             channel = ProductServiceEventChannel.updateStockLevel;
-
+		logger.info("EVENT PUBLISHER: " + event.toString() + " on CHANNEL: " + channel);
         template.send(channel, event);
     }
 

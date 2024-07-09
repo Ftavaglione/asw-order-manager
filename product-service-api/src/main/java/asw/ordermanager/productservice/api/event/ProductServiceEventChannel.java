@@ -1,4 +1,4 @@
-package asw.ordermanager.productservice.api.event;
+package asw.ordermanager.api.event;
 
 public class ProductServiceEventChannel {
     public static final String productCreated = "product-service.product-created.event";

@@ -1,6 +1,7 @@
 package asw.ordermanager.ordervalidationservice.domain;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.logging.Logger;
 
 import java.util.Collection;
 import java.util.List;
@@ -8,12 +9,15 @@ import java.util.List;
 @Service
 public class ProductService {
 
+	private final Logger logger = Logger.getLogger(this.getClass().toString());																		
 	@Autowired
 	private ProductRepository productRepository;
 
 	public Product createProduct(String name,  int stockLevel) {
+		
 		Product product = new Product(name, stockLevel);
 		productRepository.save(product);
+		logger.info("prodotto salvato correttamente");										  
 		return product;
 	}
 
